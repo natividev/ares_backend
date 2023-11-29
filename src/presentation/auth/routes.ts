@@ -2,12 +2,15 @@
 
 import { Router } from "express";
 import { AuthController } from "./controller";
+import { AuthDatasourceImpl, AuthRepositoryImpl } from "../../infranstructure";
 
 export class AuthRoutes {
   static get routes(): Router {
 
     const router = Router();
-    const controller = new AuthController();
+    const datasource = new AuthDatasourceImpl();
+    const authRepositoy = new AuthRepositoryImpl(datasource);
+    const controller = new AuthController(authRepositoy);
 
     //Definicion de todas las rutas principales
     router.post('/login', controller.logiUser)
